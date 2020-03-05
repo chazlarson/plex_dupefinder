@@ -200,10 +200,10 @@ def get_media_info(item):
 def delete_item(show_key, media_id):
     delete_url = urljoin(cfg.PLEX_SERVER, '%s/media/%d' % (show_key, media_id))
     log.debug("Sending DELETE request to %r" % delete_url)
-    if requests.delete(delete_url, headers={'X-Plex-Token': cfg.PLEX_TOKEN}).status_code == 200:
-        print("\t\tDeleted media item: %r" % media_id)
-    else:
-        print("\t\tError deleting media item: %r" % media_id)
+#    if requests.delete(delete_url, headers={'X-Plex-Token': cfg.PLEX_TOKEN}).status_code == 200:
+#        print("\t\tDeleted media item: %r" % media_id)
+#    else:
+#        print("\t\tError deleting media item: %r" % media_id)
 
 
 ############################################################
@@ -462,7 +462,8 @@ if __name__ == "__main__":
                         if should_skip(part_info['file']):
                             print("\tSkipping removal of this item as there is a match in SKIP_LIST")
                             continue
-                        delete_item(part_info['show_key'], media_id)
+                        if not cfg.DRY_RUN:
+                            delete_item(part_info['show_key'], media_id)
                         write_decision(removed=part_info)
                         time.sleep(2)
             else:
