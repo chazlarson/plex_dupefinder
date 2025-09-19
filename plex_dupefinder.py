@@ -451,7 +451,10 @@ if __name__ == "__main__":
                         if should_skip(part_info['file']):
                             print("\tSkipping removal of this item as there is a match in SKIP_LIST")
                             continue
-                        delete_item(part_info['show_key'], media_id)
+                        if not cfg.DRY_RUN:
+                            delete_item(part_info['show_key'], media_id)
+                        else:
+                            print("Dry run: not actually deleting...")
                         write_decision(removed=part_info)
                         time.sleep(2)
             else:
